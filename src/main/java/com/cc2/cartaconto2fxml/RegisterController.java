@@ -3,7 +3,11 @@ package com.cc2.cartaconto2fxml;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class SecondaryController {
+/**
+ *
+ * @author seba2
+ */
+public class RegisterController {
 
     @FXML
     private void switchToPrimary() throws IOException {
