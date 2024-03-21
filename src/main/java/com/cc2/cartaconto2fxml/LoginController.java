@@ -42,7 +42,7 @@ public class LoginController {
     }
 
     @FXML
-    private void switchToLogin() throws IOException {
+    private void switchToLogin() throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("newmovement.fxml"));
         Parent root = loader.load();
 
@@ -59,7 +59,7 @@ public class LoginController {
     }
 
     @FXML
-    private void login() throws IOException {
+    private void login() throws IOException, Exception {
         try {
             if (txtUsername.getText().trim().length() == 0 && txtPassword.getText().trim().length() == 0) {
                 Alert nothingToCheck = new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!");

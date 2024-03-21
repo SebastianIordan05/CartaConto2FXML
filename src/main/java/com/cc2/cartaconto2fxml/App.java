@@ -79,7 +79,6 @@ public class App extends Application {
         return new HashMap<>();
     }
     
-    // serializzazione dei Libri in un file 
     private static void saveIntestatari(final Map<String, Intestatario> intestatari, final File f) {
         try {
             if (!f.exists()) {

@@ -26,7 +26,7 @@ public class ChangePassController {
     @FXML
     private TextField txtOldPassword;
     @FXML
-    private TextField txtNewPassword;
+    private TextField txtNewPassowrd;
     
     @FXML
     private void switchToLogin() throws IOException {

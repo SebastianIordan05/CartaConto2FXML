@@ -40,6 +40,7 @@ public class NewMovementController implements Initializable {
 
     private Object selectedItem;
     private LocalDate date;
+    private String saldo = "";
 
     @FXML
     private ChoiceBox lstTipoMovimento;
@@ -124,7 +125,7 @@ public class NewMovementController implements Initializable {
         }
     }
 
-    public void setIntestatario(Intestatario intestatario) {
+    public void setIntestatario(Intestatario intestatario) throws Exception {
         this.intestatario = intestatario;
 //        System.out.println("Intestatario impostato nel controller NewMovementController: " + intestatario);
 
@@ -134,13 +135,15 @@ public class NewMovementController implements Initializable {
         if (conto == null) {
             conto = new Conto(generateIBAN(), intestatario);
             App.conti.put(intestatario.getNome(), conto);
-            
-            Alert newContoCreated = new Alert(Alert.AlertType.INFORMATION, "New conto created for " + intestatario.getNome() +
-                    " with the iban: " + conto.getCodiceIBAN() + "!");
+
+            Alert newContoCreated = new Alert(Alert.AlertType.INFORMATION, "New conto created for " + intestatario.getNome()
+                    + ", iban: " + conto.getCodiceIBAN());
             newContoCreated.showAndWait();
         }
 
         lblIban.setText(conto.getCodiceIBAN());
+        saldo = Double.toString(conto.calcolaSaldo());
+        lblSaldo.setText(saldo + " $");
     }
 
     private String generateIBAN() {
@@ -163,45 +166,47 @@ public class NewMovementController implements Initializable {
             str.append("\n");
         }
         str.append("Saldo totale del conto: ").append(conto.calcolaSaldo()).append("\n");
-        
+
         return str.toString();
+    }
+
+    @FXML
+    private void checkMovements() {
+        try {
+            Alert movements = new Alert(Alert.AlertType.INFORMATION, check());
+            movements.showAndWait();
+        } catch (Exception ex) {
+        }
+    }
+
+    @FXML
+    private void effettuaMovimento() throws Exception {
+        movimento();
+        conto.registraOperazione(movimento, Integer.parseInt(txtImporto.getText()), movimento.getDescrizione(), date);
+        System.out.println(conto.toString());
+
+        System.out.println("saldo: " + conto.calcolaSaldo() + ", IBAN: " + conto.getCodiceIBAN() + ", nome: " + intestatario.getNome() + ", in data: " + date);
+        
+        saldo = Double.toString(conto.calcolaSaldo());
+        lblSaldo.setText(saldo + " $");
+        txtImporto.setText("");
+        txtCausale.setText("");
+    }
+
+    @FXML
+    private void setDate() {
+        date = datePicker.getValue();
+    }
+
+    @FXML
+    private void setTipoMovimento() {
+        selectedItem = lstTipoMovimento.getSelectionModel().getSelectedItem();
+        System.out.println("selectedItem: " + selectedItem);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeChoiceBox();
-
         movimento = new TipoMovimento();
-        lstTipoMovimento.setValue("tipo movimento");
-
-        lstTipoMovimento.setOnAction((event) -> {
-            selectedItem = lstTipoMovimento.getSelectionModel().getSelectedItem();
-            System.out.println("selectedItem: " + selectedItem);
-        });
-        
-        datePicker.setOnAction((event) -> {
-            date = datePicker.getValue();
-        });
-
-        btnEffettuaBonifico.setOnAction((event) -> {
-            movimento();
-            conto.registraOperazione(movimento, Integer.parseInt(txtImporto.getText()), movimento.getDescrizione(), date);
-            System.out.println(conto.toString());
-
-            conto.setSaldo(Integer.parseInt(txtImporto.getText()));
-//            lblSaldo.setText(conto.getSaldo());
-            System.out.println("saldo: " + conto.getSaldo() + ", IBAN: " + conto.getCodiceIBAN() + ", nome: " + intestatario.getNome() + ", in data: " + date);
-
-            txtImporto.setText("");
-            txtCausale.setText("");
-        });
-        
-        btnCheckMovements.setOnAction((event) -> {
-            Alert movements;
-            try {
-                movements = new Alert(Alert.AlertType.INFORMATION, check());
-                movements.showAndWait();
-            } catch (Exception ex) {}
-        });
     }
 }
