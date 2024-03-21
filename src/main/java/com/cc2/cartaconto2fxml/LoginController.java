@@ -1,7 +1,16 @@
 package com.cc2.cartaconto2fxml;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import model.Intestatario;
 
 /**
  *
@@ -9,8 +18,78 @@ import javafx.fxml.FXML;
  */
 public class LoginController {
 
+    private Intestatario intestatario;
+//    private NewMovementController newMovement;
+
     @FXML
-    private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+    private Button btnLogin;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtPassword;
+    @FXML
+    private Button btnRegister;
+
+    @FXML
+    private void switchToRegister() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("newConto.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) btnRegister.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void switchToLogin() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("newmovement.fxml"));
+        Parent root = loader.load();
+
+        NewMovementController newMovement = loader.getController();
+        newMovement = loader.getController();
+        if (intestatario != null) {
+            newMovement.setIntestatario(intestatario);
+        }
+        
+        Stage stage = (Stage) btnLogin.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void login() throws IOException {
+        try {
+            if (txtUsername.getText().trim().length() == 0 && txtPassword.getText().trim().length() == 0) {
+                Alert nothingToCheck = new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!");
+                nothingToCheck.showAndWait();
+            }
+
+            String code = txtUsername.getText();
+            intestatario = App.intestatari.get(code);
+
+            if (intestatario == null) {
+                Alert bookNotFound = new Alert(Alert.AlertType.INFORMATION, "No intestatario found with the name: " + code);
+                bookNotFound.showAndWait();
+                txtUsername.setText("");
+                txtPassword.setText((""));
+                return;
+            }
+
+            if (txtPassword.getText().equals(intestatario.getPassword()) && txtUsername.getText().equals(intestatario.getNome())) {
+                switchToLogin();
+            }
+
+            return;
+        } catch (NumberFormatException ex) {
+        } catch (IllegalArgumentException ex) {
+        }
+
+        Alert wrongCode = new Alert(Alert.AlertType.ERROR, "Wrong username!");
+        wrongCode.showAndWait();
+
+        txtUsername.setText("");
+        txtPassword.setText("");
     }
 }

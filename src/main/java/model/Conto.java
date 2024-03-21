@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,12 +14,14 @@ import java.util.List;
  *
  * @author seb
  */
-public class Conto {
+public class Conto implements Serializable {
 
     private final String codiceIBAN;
     private final Date dataApertura;
     private final Intestatario intestatario;
     private final List<Movimento> movimenti;
+    public int saldo = 0;
+    private LocalDate date;
 
     public Conto(String codiceIBAN, Intestatario intestatario) {
         this.codiceIBAN = codiceIBAN;
@@ -33,9 +37,9 @@ public class Conto {
 //        movimenti = new ArrayList<>();
 //    }
 
-    public void registraOperazione(TipoMovimento tipoMovimento, double importo, String descrizione) {
+    public void registraOperazione(TipoMovimento tipoMovimento, double importo, String descrizione, LocalDate date) {
         int numeroProgressivo = movimenti.size() + 1;
-        Movimento movimento = new Movimento(numeroProgressivo, new Date(), codiceIBAN, tipoMovimento, importo,
+        Movimento movimento = new Movimento(numeroProgressivo, date, codiceIBAN, tipoMovimento, importo,
                 descrizione, tipoMovimento.getCosto());
         movimenti.add(movimento);
     }
@@ -70,6 +74,14 @@ public class Conto {
         return "Conto{ " + "codiceIBAN = " + codiceIBAN + ", dataApertura = " 
                 + dataApertura + ", intestatario = " + intestatario + ", movimenti = " 
                 + movimenti + " }";
+    }
+
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
+    }
+
+    public int getSaldo() {
+        return saldo;
     }
     
 }

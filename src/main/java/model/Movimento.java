@@ -4,16 +4,18 @@
  */
 package model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
  *
  * @author seb
  */
-public class Movimento {
+public class Movimento implements Serializable {
 
     private final int numeroProgressivo;
-    private final Date dataOperazione;
+    private final LocalDate dataOperazione;
     private final Date dataValuta;
     private final String codiceIBAN;
     private final TipoMovimento tipoOperazione;
@@ -21,7 +23,7 @@ public class Movimento {
     private final String descrizione;
     private final double costoOperazione;
 
-    public Movimento(int numeroProgressivo, Date dataOperazione, String codiceIBAN, TipoMovimento tipoOperazione,
+    public Movimento(int numeroProgressivo, LocalDate dataOperazione, String codiceIBAN, TipoMovimento tipoOperazione,
             double importo, String descrizione, double costoOperazione) {
         this.numeroProgressivo = numeroProgressivo;
         this.dataOperazione = dataOperazione;
@@ -37,7 +39,7 @@ public class Movimento {
         return numeroProgressivo;
     }
 
-    public Date getDataOperazione() {
+    public LocalDate getDataOperazione() {
         return dataOperazione;
     }
 
