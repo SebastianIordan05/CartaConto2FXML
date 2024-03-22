@@ -44,11 +44,10 @@ public class Intestatario implements Serializable {
 
     @Override
     public String toString() {
-        return "Intestatario{" + "codiceFiscale=" + codiceFiscale +
-                ", cognome=" + cognome + ", nome=" + nome +
-                ", luogoNascita=" + luogoNascita + ", dataNascita=" + dataNascita +
-                ", indirizzo=" + indirizzo + ", cap=" + cap + ", citta=" + citta +
-                ", provincia=" + provincia + ", cellulare=" + cellulare + ", email=" + email + '}';
+        return "Intestatario{" + "codiceFiscale=" + codiceFiscale + ", cognome=" + cognome + ", nome=" + nome +
+                ", luogoNascita=" + luogoNascita + ", dataNascita=" + dataNascita + ", indirizzo=" + indirizzo +
+                ", cap=" + cap + ", citta=" + citta + ", provincia=" + provincia + ", cellulare=" + cellulare +
+                ", email=" + email + ", password=" + password + '}';
     }
     
     public String getCodiceFiscale() {

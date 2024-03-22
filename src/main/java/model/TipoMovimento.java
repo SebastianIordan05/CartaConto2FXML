@@ -60,6 +60,8 @@ public class TipoMovimento implements Serializable {
 
     @Override
     public String toString() {
-        return "TipoMovimento{" + "codice=" + codice + ", descrizione=" + descrizione + ", segnoOperazione=" + segnoOperazione + ", giorniValuta=" + giorniValuta + ", costo=" + costo + '}';
+        return "TipoMovimento{" + "codice=" + codice + ", descrizione=" + descrizione +
+                ", segnoOperazione=" + segnoOperazione + ", giorniValuta=" + giorniValuta +
+                ", costo=" + costo + '}';
     }
 }

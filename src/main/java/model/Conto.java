@@ -29,13 +29,6 @@ public class Conto implements Serializable {
         this.intestatario = intestatario;
         this.movimenti = new ArrayList<>();
     }
-    
-//    public Conto(Intestatario intestatario) {
-//        codiceIBAN = "IT96W09890091672EM982237801";
-//        dataApertura = new Date();
-//        this.intestatario = intestatario;
-//        movimenti = new ArrayList<>();
-//    }
 
     public void registraOperazione(TipoMovimento tipoMovimento, double importo, String descrizione, LocalDate date) {
         int numeroProgressivo = movimenti.size() + 1;

@@ -69,7 +69,6 @@ public class App extends Application {
             
             final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(f));
             final Map<String, Intestatario> intestatario = (Map<String, Intestatario>) inputStream.readObject();
-//            System.out.println("Intestatari: " + intestatario);
             
             return intestatario;
 
@@ -108,7 +107,6 @@ public class App extends Application {
             
             final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(f));
             final Map<String, Conto> conto = (Map<String, Conto>) inputStream.readObject();
-//            System.out.println("Intestatari: " + intestatario);
             
             return conto;
 
