@@ -5,14 +5,18 @@
 package com.cc2.cartaconto2fxml;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Intestatario;
@@ -21,14 +25,15 @@ import model.Intestatario;
  *
  * @author seba2
  */
-public class NewContoController {
-    
+public class NewContoController implements Initializable {
+
     private Intestatario intestatario;
+    private LocalDate date;
 
     @FXML
     private TextField txtSurname;
     @FXML
-    private TextField txtDataDiNascita;
+    private DatePicker datePicker;
     @FXML
     private TextField txtName;
     @FXML
@@ -51,7 +56,20 @@ public class NewContoController {
     private TextField txtEmail;
     @FXML
     private Button btnNewIntestatario;
-    
+
+    @FXML
+    private void switchToLogin() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent root = loader.load();
+
+        newIntestatario();
+
+        Stage stage = (Stage) btnNewIntestatario.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static boolean controllaEmail(String email) {
         String pattern = "[a-zA-Z]+\\.[a-zA-Z]+@edu\\.iisleviponti\\.it";
 
@@ -66,7 +84,7 @@ public class NewContoController {
 //
 //        return m.matches();
 //    }
-
+    
     public static boolean controllaCodiceFiscale(String codiceFiscale) {
         if (codiceFiscale.length() != 16) {
             return false;
@@ -90,26 +108,37 @@ public class NewContoController {
 
         return true;
     }
-    
-    @FXML
-    private void switchToLogin() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
-        Parent root = loader.load();
-        
-        newIntestatario();
 
-        Stage stage = (Stage) btnNewIntestatario.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    private void setDate() {
+        date = datePicker.getValue();
     }
-    
+
     private void newIntestatario() {
-        intestatario = new Intestatario(txtCodiceFiscale.getText(), txtSurname.getText(),
-                txtName.getText(), txtCittaDiNascita.getText(), new Date(), txtIndirizzoAttuale.getText(),
-                txtCapAttuale.getText(), txtCittaAttuale.getText(), txtProvinciaAttuale.getText(),
-                txtCellulare.getText(), txtEmail.getText(), txtPassword.getText());
-        
-        App.intestatari.put(txtName.getText(), intestatario);
+        if (txtCodiceFiscale.getText().trim().length() == 0 && txtSurname.getText().trim().length() == 0
+                && txtName.getText().trim().length() == 0 && txtCittaDiNascita.getText().trim().length() == 0 && date == null
+                && txtIndirizzoAttuale.getText().trim().length() == 0 && txtCapAttuale.getText().trim().length() == 0
+                && txtCittaAttuale.getText().trim().length() == 0 && txtProvinciaAttuale.getText().trim().length() == 0
+                && txtCellulare.getText().trim().length() == 0 && txtEmail.getText().trim().length() == 0
+                && txtPassword.getText().trim().length() == 0) {
+            new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
+        } else {
+            intestatario = new Intestatario(txtCodiceFiscale.getText(), txtSurname.getText(),
+                    txtName.getText(), txtCittaDiNascita.getText(), date, txtIndirizzoAttuale.getText(),
+                    txtCapAttuale.getText(), txtCittaAttuale.getText(), txtProvinciaAttuale.getText(),
+                    txtCellulare.getText(), txtEmail.getText(), txtPassword.getText());
+
+            App.intestatari.put(txtName.getText(), intestatario);
+        }
+
+    }
+
+    private void initializeDatePicker() {
+        datePicker.setValue(LocalDate.now());
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        initializeDatePicker();
     }
 }

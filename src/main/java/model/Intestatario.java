@@ -5,7 +5,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Intestatario implements Serializable {
     private final String cognome;
     private final String nome;
     private final String luogoNascita;
-    private final Date dataNascita;
+    private final LocalDate dataNascita;
     private final String indirizzo;
     private final String cap;
     private final String citta;
@@ -26,7 +26,7 @@ public class Intestatario implements Serializable {
     private final String email;
     private String password;
     
-    public Intestatario(String codiceFiscale, String cognome, String nome, String luogoNascita, Date dataNascita,
+    public Intestatario(String codiceFiscale, String cognome, String nome, String luogoNascita, LocalDate dataNascita,
             String indirizzo, String cap, String citta, String provincia, String cellulare, String email, String password) {
         this.codiceFiscale = codiceFiscale;
         this.cognome = cognome;
@@ -41,27 +41,6 @@ public class Intestatario implements Serializable {
         this.email = email;
         this.password = password;
     }
-    
-//    public Intestatario() {
-//        this.codiceFiscale = "RDNSST05H24L736E";
-//        this.cognome = "iordan";
-//        this.nome = "sebastian";
-//        this.luogoNascita = "venezia";
-//        this.dataDiNascita2 = "24/06/2005";
-//        this.indirizzo = "via alcide de gasperi 23/3";
-//        this.cap = "30030";
-//        this.citta = "salzano";
-//        this.provincia = "venezia";
-//        this.cellulare = "3338782703";
-//        this.email = "sebastian.iordan@edu.iisleviponti.it";
-//    }
-
-//    public void modificaDatiResidenza(String nuovoIndirizzo, String nuovoCap, String nuovaCitta, String nuovaProvincia) {
-//        this.indirizzo = nuovoIndirizzo;
-//        this.cap = nuovoCap;
-//        this.citta = nuovaCitta;
-//        this.provincia = nuovaProvincia;
-//    }
 
     @Override
     public String toString() {
@@ -88,7 +67,7 @@ public class Intestatario implements Serializable {
         return luogoNascita;
     }
 
-    public Date getDataNascita() {
+    public LocalDate getDataNascita() {
         return dataNascita;
     }
 

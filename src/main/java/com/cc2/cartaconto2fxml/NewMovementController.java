@@ -125,6 +125,7 @@ public class NewMovementController implements Initializable {
     
     private void initializeDatePicker() {
         datePicker.setValue(LocalDate.now());
+        date = datePicker.getValue();
     }
 
     public void setIntestatario(Intestatario intestatario) throws Exception {
@@ -190,10 +191,10 @@ public class NewMovementController implements Initializable {
         txtCausale.setText("");
     }
 
-//    @FXML
-//    private void setDate() {
-//        date = datePicker.getValue();
-//    }
+    @FXML
+    private void setDate() {
+        date = datePicker.getValue();
+    }
 
     @FXML
     private void setTipoMovimento() {
@@ -210,7 +211,7 @@ public class NewMovementController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeChoiceBox();
-//        initializeDatePicker();
+        initializeDatePicker();
         movimento = new TipoMovimento();
     }
 }

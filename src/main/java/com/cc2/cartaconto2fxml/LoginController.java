@@ -73,6 +73,7 @@ public class LoginController {
         try {
             if (txtUsername.getText().trim().length() == 0 && txtPassword.getText().trim().length() == 0) {
                 new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
+                return;
             }
 
             String code = txtUsername.getText();
