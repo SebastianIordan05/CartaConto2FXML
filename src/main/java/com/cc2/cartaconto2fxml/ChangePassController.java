@@ -50,6 +50,7 @@ public class ChangePassController {
         try {
             if (txtUsername.getText().trim().length() == 0 && txtOldPassword.getText().trim().length() == 0) {
                 new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or oldPassword!").showAndWait();
+                return;
             }
 
             String code = txtUsername.getText();
@@ -65,6 +66,9 @@ public class ChangePassController {
 
             if (txtOldPassword.getText().equals(intestatario.getPassword()) && txtUsername.getText().equals(intestatario.getNome())) {
                 intestatario.setPassword(txtNewPassowrd.getText());
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or oldPassword!").showAndWait();
+                return;
             }
 
             return;
