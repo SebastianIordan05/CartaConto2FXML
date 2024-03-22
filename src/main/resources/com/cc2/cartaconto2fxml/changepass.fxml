@@ -14,6 +14,7 @@
       <Label layoutX="118.0" layoutY="234.0" text="new password" />
       <Label layoutX="117.0" layoutY="192.0" text="old password" />
       <Label layoutX="118.0" layoutY="152.0" text="username" />
-      <Button fx:id="btnChangePassword" layoutX="246.0" layoutY="297.0" mnemonicParsing="false" onAction="#switchToLogin" text="change password" />
+      <Button fx:id="btnChangePassword" layoutX="246.0" layoutY="297.0" mnemonicParsing="false" onAction="#changePass" text="change password" />
+      <Button fx:id="btnBackToLogin" layoutX="257.0" layoutY="330.0" mnemonicParsing="false" onAction="#switchToLogin" text="back to login" />
    </children>
 </Pane>

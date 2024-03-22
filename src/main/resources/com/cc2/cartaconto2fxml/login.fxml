@@ -7,12 +7,13 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cc2.cartaconto2fxml.LoginController">
    <children>
-      <Button fx:id="btnLogin" layoutX="247.0" layoutY="309.0" mnemonicParsing="false" onAction="#login" text="login" />
+      <Button fx:id="btnLogin" layoutX="213.0" layoutY="309.0" mnemonicParsing="false" onAction="#login" text="login" />
       <Label layoutX="282.0" layoutY="45.0" text="LOGIN" />
       <Label layoutX="172.0" layoutY="175.0" text="password" />
       <Label layoutX="172.0" layoutY="129.0" text="username" />
       <TextField fx:id="txtUsername" layoutX="268.0" layoutY="125.0" promptText="e.g.: sebastianiordan" />
       <TextField fx:id="txtPassword" layoutX="268.0" layoutY="171.0" promptText="password" />
-      <Button fx:id="btnRegister" layoutX="316.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToRegister" text="register" />
+      <Button fx:id="btnRegister" layoutX="272.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToRegister" text="register" />
+      <Button fx:id="btnChangePass" layoutX="342.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToChangePass" text="change pass" />
    </children>
 </Pane>

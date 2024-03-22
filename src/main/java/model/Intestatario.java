@@ -6,7 +6,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 
 /**
  *
@@ -25,7 +24,7 @@ public class Intestatario implements Serializable {
     private final String provincia;
     private final String cellulare;
     private final String email;
-    private final String password;
+    private String password;
     
     public Intestatario(String codiceFiscale, String cognome, String nome, String luogoNascita, Date dataNascita,
             String indirizzo, String cap, String citta, String provincia, String cellulare, String email, String password) {
@@ -119,5 +118,9 @@ public class Intestatario implements Serializable {
 
     public String getPassword() {
         return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

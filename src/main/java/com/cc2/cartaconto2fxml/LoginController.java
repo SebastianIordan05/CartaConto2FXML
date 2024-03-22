@@ -1,7 +1,6 @@
 package com.cc2.cartaconto2fxml;
 
 import java.io.IOException;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +18,6 @@ import model.Intestatario;
 public class LoginController {
 
     private Intestatario intestatario;
-//    private NewMovementController newMovement;
 
     @FXML
     private Button btnLogin;
@@ -29,6 +27,8 @@ public class LoginController {
     private TextField txtPassword;
     @FXML
     private Button btnRegister;
+    @FXML
+    private Button btnChangePass;
 
     @FXML
     private void switchToRegister() throws IOException {
@@ -40,8 +40,18 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
-
+    
     @FXML
+    private void switchToChangePass() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("changepass.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) btnChangePass.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private void switchToLogin() throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("newmovement.fxml"));
         Parent root = loader.load();
@@ -62,16 +72,14 @@ public class LoginController {
     private void login() throws IOException, Exception {
         try {
             if (txtUsername.getText().trim().length() == 0 && txtPassword.getText().trim().length() == 0) {
-                Alert nothingToCheck = new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!");
-                nothingToCheck.showAndWait();
+                new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
             }
 
             String code = txtUsername.getText();
             intestatario = App.intestatari.get(code);
 
             if (intestatario == null) {
-                Alert bookNotFound = new Alert(Alert.AlertType.INFORMATION, "No intestatario found with the name: " + code);
-                bookNotFound.showAndWait();
+                new Alert(Alert.AlertType.INFORMATION, "No intestatario found with the name: " + code).showAndWait();
                 txtUsername.setText("");
                 txtPassword.setText((""));
                 return;
@@ -83,11 +91,7 @@ public class LoginController {
 
             return;
         } catch (NumberFormatException ex) {
-        } catch (IllegalArgumentException ex) {
-        }
-
-        Alert wrongCode = new Alert(Alert.AlertType.ERROR, "Wrong username!");
-        wrongCode.showAndWait();
+        } catch (IllegalArgumentException ex) {}
 
         txtUsername.setText("");
         txtPassword.setText("");
