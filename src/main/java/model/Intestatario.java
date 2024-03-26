@@ -4,8 +4,16 @@
  */
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -26,6 +34,9 @@ public class Intestatario implements Serializable {
     private final String email;
     private String password;
     
+    final public static String FILE_PATH = "./.intestatari"; // path del file
+    public static Map<String, Intestatario> intestatari = loadIntestatari(new File(FILE_PATH));
+    
     public Intestatario(String codiceFiscale, String cognome, String nome, String luogoNascita, LocalDate dataNascita,
             String indirizzo, String cap, String citta, String provincia, String cellulare, String email, String password) {
         this.codiceFiscale = codiceFiscale;
@@ -40,6 +51,44 @@ public class Intestatario implements Serializable {
         this.cellulare = cellulare;
         this.email = email;
         this.password = password;
+    }
+    
+    private static Map<String, Intestatario> loadIntestatari(final File f) {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+                return new HashMap<>();
+            }
+            
+            if (!f.canRead()) {
+                return new HashMap<>();
+            }
+            
+            final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(f));
+            final Map<String, Intestatario> intestatario = (Map<String, Intestatario>) inputStream.readObject();
+            
+            return intestatario;
+
+        } catch (final IOException | ClassNotFoundException ex) {
+        }
+
+        return new HashMap<>();
+    }
+    
+    public static void saveIntestatari(final Map<String, Intestatario> intestatari, final File f) {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            
+            if (!f.canWrite()) {
+                return;
+            }
+            
+            final ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(f));
+            outputStream.writeObject(intestatari);
+        } catch (final IOException ex) {
+        }
     }
 
     @Override

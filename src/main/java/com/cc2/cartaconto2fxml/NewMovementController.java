@@ -34,16 +34,15 @@ import model.TipoMovimento;
  */
 public class NewMovementController implements Initializable {
 
-    private Intestatario intestatario;
-    private Conto conto;
-    private TipoMovimento movimento;
+    private Intestatario i;
+    private Conto c;
+    private TipoMovimento m;
 
     private Object selectedItem;
     private LocalDate date;
-    private String saldo = "";
 
     @FXML
-    private ChoiceBox lstTipoMovimento;
+    private ChoiceBox<String> lstTipoMovimento;
     @FXML
     private TextField txtImporto;
     @FXML
@@ -84,21 +83,56 @@ public class NewMovementController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    
+    @FXML
+    private void effettuaMovimento() throws Exception {
+        movimento();
+        c.registraOperazione(m, Double.parseDouble(txtImporto.getText()), m.getDescrizione(), date);
+
+        System.out.println("importo to double: " + Double.valueOf(txtImporto.getText()));
+        System.out.println(c.toString());
+
+        System.out.println("saldo: " + c.calcolaSaldo() + ", IBAN: " + c.getCodiceIBAN() + ", nome: " + i.getNome() + ", in data: " + date);
+
+        setLabel();
+        txtImporto.setText("");
+        txtCausale.setText("");
+    }
+
+    @FXML
+    private void checkMovements() {
+        new Alert(Alert.AlertType.INFORMATION, check()).showAndWait();
+    }
+
+    @FXML
+    private void setDate() {
+        date = datePicker.getValue();
+    }
+
+    @FXML
+    private void setTipoMovimento() {
+        selectedItem = lstTipoMovimento.getSelectionModel().getSelectedItem();
+        System.out.println("selectedItem: " + selectedItem);
+
+    }
 
     private void movimento() {
-        if (movimento != null) {
+        if (m != null) {
             if (txtImporto.getText().trim().length() != 0 && txtCausale.getText().trim().length() != 0 && selectedItem != null && date != null) {
-                movimento.setCodice(selectedItem.toString());
-                if ("versamento".equals(movimento.getCodice())) {
-                    movimento.setSegnoOperazione("+");
-                } else if ("prelievo".equals(movimento.getCodice()) || "bonifico ordinario".equals(movimento.getCodice()) || "bonifico istantaneo".equals(movimento.getCodice())) {
-                    movimento.setSegnoOperazione("-");
+                m.setCodice(selectedItem.toString());
+                if ("versamento".equals(m.getCodice())) {
+                    m.setSegnoOperazione('+');
+                    System.out.println("segno: " + m.getSegnoOperazione());
+                } else if ("prelievo".equals(m.getCodice()) || "bonifico ordinario".equals(m.getCodice()) || "bonifico istantaneo".equals(m.getCodice())) {
+                    m.setSegnoOperazione('-');
+                    System.out.println("segno: " + m.getSegnoOperazione());
                 }
-                if ("bonifico istantaneo".equals(movimento.getCodice())) {
-                    movimento.setCosto(2.5); // 2,5 euro
+                if ("bonifico istantaneo".equals(m.getCodice())) {
+                    m.setCosto(2.5); // 2,5 euro
+                    System.out.println("costo: " + m.getCosto());
                 }
-                movimento.setDescrizione(txtCausale.getText());
-                System.out.println(movimento.toString());
+                m.setDescrizione(txtCausale.getText());
+                System.out.println(m.toString());
             } else {
                 new Alert(Alert.AlertType.ERROR, "Wrong importo, causale, tipo movimento and data!").showAndWait();
             }
@@ -108,41 +142,21 @@ public class NewMovementController implements Initializable {
         }
     }
 
-    private void initializeChoiceBox() {
-        for (int i = 1; i < 5; i++) {
-            switch (i) {
-                case 1 ->
-                    lstTipoMovimento.getItems().add("versamento");
-                case 2 ->
-                    lstTipoMovimento.getItems().add("prelievo");
-                case 3 ->
-                    lstTipoMovimento.getItems().add("bonifico ordinario");
-                case 4 ->
-                    lstTipoMovimento.getItems().add("bonifico istantaneo");
-            }
-        }
-    }
-    
-    private void initializeDatePicker() {
-        datePicker.setValue(LocalDate.now());
-        date = datePicker.getValue();
-    }
+    public void setIntestatario(Intestatario i) throws Exception {
+        this.i = i;
 
-    public void setIntestatario(Intestatario intestatario) throws Exception {
-        this.intestatario = intestatario;
+        String code = i.getNome();
+        c = Conto.conti.get(code);
 
-        String code = intestatario.getNome();
-        conto = App.conti.get(code);
+        if (c == null) {
+            c = new Conto(generateIBAN(), i);
+            Conto.conti.put(i.getNome(), c);
 
-        if (conto == null) {
-            conto = new Conto(generateIBAN(), intestatario);
-            App.conti.put(intestatario.getNome(), conto);
-
-            new Alert(Alert.AlertType.INFORMATION, "New conto created for " + intestatario.getNome()
-                    + ", iban: " + conto.getCodiceIBAN()).showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "New conto created for " + i.getNome()
+                    + ", iban: " + c.getCodiceIBAN()).showAndWait();
         }
 
-        lblIban.setText(conto.getCodiceIBAN());
+        lblIban.setText(c.getCodiceIBAN());
         setLabel();
     }
 
@@ -157,61 +171,42 @@ public class NewMovementController implements Initializable {
         return ibanBuilder.toString();
     }
 
-    private String check() throws Exception {
+    private String check() {
         StringBuilder str = new StringBuilder();
-        List<Movimento> operazioni = conto.elencoOperazioni();
-        str.append("Elenco operazioni del conto: \n");
+        List<Movimento> operazioni = c.elencoOperazioni();
+        str.append("- Elenco operazioni del conto: \n\n");
         for (Movimento movement : operazioni) {
-            str.append(movement.getNumeroProgressivo()).append(": ").append(movement.getDescrizione()).append(", Data operazione: ").append(movement.getDataOperazione()).append(", Importo: ").append(movement.getImporto()).append(", Costo operazione: ").append(movement.getCostoOperazione());
-            str.append("\n");
+            str.append("    ").append(movement.getNumeroProgressivo()).append(": \n")
+                    .append("        ").append("Causale: ").append(movement.getDescrizione()).append("\n")
+                    .append("        ").append("Data operazione: ").append(movement.getDataOperazione()).append("\n")
+                    .append("        ").append("Importo: ").append(movement.getImporto()).append(" $").append("\n")
+                    .append("        ").append("Costo operazione: ").append(movement.getCostoOperazione()).append(" $").append("\n")
+                    .append("        ").append("Tipo movimento: ").append(movement.getTipoOperazione().getCodice()).append("\n")
+                    .append("        ").append("Segno movimento: ").append(movement.getTipoOperazione().getSegnoOperazione()).append("\n");
         }
-        str.append("Saldo totale del conto: ").append(conto.calcolaSaldo()).append("\n");
+        str.append("\n").append("- Saldo totale del conto: ").append(c.calcolaSaldo()).append(" $").append("\n");
 
         return str.toString();
     }
 
-    @FXML
-    private void checkMovements() {
-        try {
-            new Alert(Alert.AlertType.INFORMATION, check()).showAndWait();
-        } catch (Exception ex) {
-        }
-    }
-
-    @FXML
-    private void effettuaMovimento() throws Exception {
-        movimento();
-        conto.registraOperazione(movimento, Integer.parseInt(txtImporto.getText()), movimento.getDescrizione(), date);
-        System.out.println(conto.toString());
-
-        System.out.println("saldo: " + conto.calcolaSaldo() + ", IBAN: " + conto.getCodiceIBAN() + ", nome: " + intestatario.getNome() + ", in data: " + date);
-        
-        setLabel();
-        txtImporto.setText("");
-        txtCausale.setText("");
-    }
-
-    @FXML
-    private void setDate() {
-        date = datePicker.getValue();
-    }
-
-    @FXML
-    private void setTipoMovimento() {
-        selectedItem = lstTipoMovimento.getSelectionModel().getSelectedItem();
-        System.out.println("selectedItem: " + selectedItem);
-        
-    }
-    
     private void setLabel() throws Exception {
-        saldo = Double.toString(conto.calcolaSaldo());
-        lblSaldo.setText(saldo + " $");
+//        saldo = Double.toString(c.calcolaSaldo());
+        lblSaldo.setText(c.calcolaSaldo() + " $");
+    }
+
+    private void initializeChoiceBox() {
+        lstTipoMovimento.getItems().addAll("versamento", "prelievo", "bonifico ordinario", "bonifico istantaneo");
+    }
+
+    private void initializeDatePicker() {
+        datePicker.setValue(LocalDate.now());
+        date = datePicker.getValue();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initializeChoiceBox();
         initializeDatePicker();
-        movimento = new TipoMovimento();
+        m = new TipoMovimento();
     }
 }

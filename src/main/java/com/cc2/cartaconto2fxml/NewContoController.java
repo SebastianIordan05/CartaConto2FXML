@@ -7,7 +7,6 @@ package com.cc2.cartaconto2fxml;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +26,7 @@ import model.Intestatario;
  */
 public class NewContoController implements Initializable {
 
-    private Intestatario intestatario;
+    private Intestatario i;
     private LocalDate date;
 
     @FXML
@@ -56,6 +55,8 @@ public class NewContoController implements Initializable {
     private TextField txtEmail;
     @FXML
     private Button btnNewIntestatario;
+    @FXML
+    private Button btnBackToLogin;
 
     @FXML
     private void switchToLogin() throws IOException {
@@ -65,6 +66,17 @@ public class NewContoController implements Initializable {
         newIntestatario();
 
         Stage stage = (Stage) btnNewIntestatario.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    private void switchToLogin2() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) btnBackToLogin.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -121,14 +133,14 @@ public class NewContoController implements Initializable {
                 && txtCittaAttuale.getText().trim().length() == 0 && txtProvinciaAttuale.getText().trim().length() == 0
                 && txtCellulare.getText().trim().length() == 0 && txtEmail.getText().trim().length() == 0
                 && txtPassword.getText().trim().length() == 0) {
-            new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Wrong username and/or password!").showAndWait();
         } else {
-            intestatario = new Intestatario(txtCodiceFiscale.getText(), txtSurname.getText(),
+            i = new Intestatario(txtCodiceFiscale.getText(), txtSurname.getText(),
                     txtName.getText(), txtCittaDiNascita.getText(), date, txtIndirizzoAttuale.getText(),
                     txtCapAttuale.getText(), txtCittaAttuale.getText(), txtProvinciaAttuale.getText(),
                     txtCellulare.getText(), txtEmail.getText(), txtPassword.getText());
 
-            App.intestatari.put(txtName.getText(), intestatario);
+            Intestatario.intestatari.put(txtName.getText(), i);
         }
 
     }

@@ -14,7 +14,7 @@ import java.util.Date;
 public class TipoMovimento implements Serializable {
     private String codice;
     private String descrizione;
-    private String segnoOperazione;
+    private char segnoOperazione;
     private Date giorniValuta;
     private double costo;
 
@@ -26,7 +26,7 @@ public class TipoMovimento implements Serializable {
         return descrizione;
     }
 
-    public String getSegnoOperazione() {
+    public char getSegnoOperazione() {
         return segnoOperazione;
     }
 
@@ -46,7 +46,7 @@ public class TipoMovimento implements Serializable {
         this.descrizione = descrizione;
     }
 
-    public void setSegnoOperazione(String segnoOperazione) {
+    public void setSegnoOperazione(char segnoOperazione) {
         this.segnoOperazione = segnoOperazione;
     }
 

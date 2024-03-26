@@ -1,12 +1,15 @@
 package com.cc2.cartaconto2fxml;
 
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Intestatario;
@@ -17,14 +20,14 @@ import model.Intestatario;
  */
 public class LoginController {
 
-    private Intestatario intestatario;
+    private Intestatario i;
 
     @FXML
     private Button btnLogin;
     @FXML
     private TextField txtUsername;
     @FXML
-    private TextField txtPassword;
+    private PasswordField txtPassword;
     @FXML
     private Button btnRegister;
     @FXML
@@ -40,7 +43,7 @@ public class LoginController {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @FXML
     private void switchToChangePass() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("changepass.fxml"));
@@ -58,10 +61,10 @@ public class LoginController {
 
         NewMovementController newMovement = loader.getController();
         newMovement = loader.getController();
-        if (intestatario != null) {
-            newMovement.setIntestatario(intestatario);
+        if (i != null) {
+            newMovement.setIntestatario(i);
         }
-        
+
         Stage stage = (Stage) btnLogin.getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -77,22 +80,52 @@ public class LoginController {
             }
 
             String code = txtUsername.getText();
-            intestatario = App.intestatari.get(code);
+            i = Intestatario.intestatari.get(code);
 
-            if (intestatario == null) {
-                new Alert(Alert.AlertType.INFORMATION, "No intestatario found with the name: " + code).showAndWait();
+            if (i == null) {
+
+                Alert intestatarioNotFound = new Alert(Alert.AlertType.CONFIRMATION, "No intestatario found with the name: " +
+                        code + "\nDo you want to create a new one?");
+                intestatarioNotFound.setHeaderText("Intestatario not found!");
+
+                ButtonType btnOK = new ButtonType("Si");
+                ButtonType btnNO = new ButtonType("No");
+                ButtonType btnEXIT = new ButtonType("Exit");
+
+                intestatarioNotFound.getButtonTypes().setAll(btnOK, btnNO, btnEXIT);
+
+                intestatarioNotFound.showAndWait().ifPresentOrElse(result -> {
+                    if (result == btnOK) {
+                        System.out.println("You clicked OK");
+                        try {
+                            switchToRegister();
+                        } catch (IOException ex) {}
+                    } else if (result == btnNO) {
+                        System.out.println("You clicked NO");
+                    } else if (result == btnEXIT) {
+                        Platform.exit();
+                        System.out.println("You clicked EXIT");
+                    }
+                }, () -> {
+                    System.out.println("Nessun pulsante è stato premuto");
+                });
+
                 txtUsername.setText("");
-                txtPassword.setText((""));
+                txtPassword.setText("");
                 return;
             }
 
-            if (txtPassword.getText().equals(intestatario.getPassword()) && txtUsername.getText().equals(intestatario.getNome())) {
+            if (txtPassword.getText().equals(i.getPassword()) && txtUsername.getText().equals(i.getNome())) {
                 switchToLogin();
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
+                return;
             }
 
             return;
         } catch (NumberFormatException ex) {
-        } catch (IllegalArgumentException ex) {}
+        } catch (IllegalArgumentException ex) {
+        }
 
         txtUsername.setText("");
         txtPassword.setText("");

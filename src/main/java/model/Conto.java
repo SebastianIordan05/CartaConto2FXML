@@ -4,30 +4,79 @@
  */
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author seb
  */
 public class Conto implements Serializable {
-
+    
     private final String codiceIBAN;
     private final Date dataApertura;
     private final Intestatario intestatario;
     private final List<Movimento> movimenti;
-    public int saldo = 0;
     private LocalDate date;
+    private double saldo;
+    
+    public static final String FILE2_PATH = "./.conti";
+    public static Map<String, Conto> conti = loadConti(new File(FILE2_PATH));
 
     public Conto(String codiceIBAN, Intestatario intestatario) {
         this.codiceIBAN = codiceIBAN;
         this.dataApertura = new Date();
         this.intestatario = intestatario;
         this.movimenti = new ArrayList<>();
+    }
+    
+    private static Map<String, Conto> loadConti(final File f) {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+                return new HashMap<>();
+            }
+            
+            if (!f.canRead()) {
+                return new HashMap<>();
+            }
+            
+            final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(f));
+            final Map<String, Conto> conto = (Map<String, Conto>) inputStream.readObject();
+            
+            return conto;
+
+        } catch (final IOException | ClassNotFoundException ex) {
+        }
+
+        return new HashMap<>();
+    }
+    
+    public static void saveConti(final Map<String, Conto> conti, final File f) {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            
+            if (!f.canWrite()) {
+                return;
+            }
+            
+            final ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(f));
+            outputStream.writeObject(conti);
+        } catch (final IOException ex) {
+        }
     }
 
     public void registraOperazione(TipoMovimento tipoMovimento, double importo, String descrizione, LocalDate date) {
@@ -37,15 +86,21 @@ public class Conto implements Serializable {
         movimenti.add(movimento);
     }
 
-    public double calcolaSaldo() throws Exception {
-        double saldo = 0;
+    public double calcolaSaldo() {
+        saldo = 0.0;
         for (Movimento movimento : movimenti) {
             switch (movimento.getTipoOperazione().getSegnoOperazione()) {
-                case "+" -> saldo += movimento.getImporto();
-                case "-" -> saldo -= movimento.getImporto();
-                default -> throw new Exception("Type of operation not supported, supported operations are: +, -.");
+                case '+' -> {
+                    saldo += movimento.getImporto();
+                    saldo -= movimento.getCostoOperazione();
+                }
+                case '-' -> {
+                    saldo -= movimento.getImporto();
+                    saldo -= movimento.getCostoOperazione();
+                }
+                default -> throw new IllegalArgumentException("Type of operation not supported, supported operations are: +, -.");
             }
-            saldo -= movimento.getCostoOperazione();
+//            saldo -= movimento.getCostoOperazione();
         }
         return saldo;
     }
@@ -68,13 +123,4 @@ public class Conto implements Serializable {
                 + dataApertura + ", intestatario = " + intestatario + ", movimenti = " 
                 + movimenti + " }";
     }
-
-    public void setSaldo(int saldo) {
-        this.saldo = saldo;
-    }
-
-    public int getSaldo() {
-        return saldo;
-    }
-    
 }

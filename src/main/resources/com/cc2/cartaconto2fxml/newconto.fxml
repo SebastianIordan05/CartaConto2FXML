@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cc2.cartaconto2fxml.NewContoController">
    <children>
-      <Button fx:id="btnNewIntestatario" layoutX="250.0" layoutY="325.0" mnemonicParsing="false" onAction="#switchToLogin" text="new intestatario" />
+      <Button fx:id="btnNewIntestatario" layoutX="199.0" layoutY="325.0" mnemonicParsing="false" onAction="#switchToLogin" text="new intestatario" />
       <Label layoutX="258.0" layoutY="24.0" text="new intestatario" />
       <TextField fx:id="txtSurname" layoutX="151.0" layoutY="104.0" promptText="surname" />
       <TextField fx:id="txtCittaDiNascita" layoutX="151.0" layoutY="266.0" promptText="data di nascita" />
@@ -21,6 +21,7 @@
       <TextField fx:id="txtProvinciaAttuale" layoutX="317.0" layoutY="143.0" promptText="provincia attuale" />
       <TextField fx:id="txtCellulare" layoutX="317.0" layoutY="188.0" promptText="cellulare" />
       <TextField fx:id="txtEmail" layoutX="317.0" layoutY="227.0" promptText="email" />
-      <DatePicker fx:id="datePicker" layoutX="304.0" layoutY="266.0" onAction="#setDate"/>
+      <DatePicker fx:id="datePicker" layoutX="304.0" layoutY="266.0" onAction="#setDate" />
+      <Button fx:id="btnBackToLogin" layoutX="317.0" layoutY="325.0" mnemonicParsing="false" onAction="#switchToLogin2" text="back to login" />
    </children>
 </Pane>
