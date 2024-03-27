@@ -11,7 +11,7 @@
       <Button fx:id="btnNewIntestatario" layoutX="199.0" layoutY="325.0" mnemonicParsing="false" onAction="#switchToLogin" text="new intestatario" />
       <Label layoutX="258.0" layoutY="24.0" text="new intestatario" />
       <TextField fx:id="txtSurname" layoutX="151.0" layoutY="104.0" promptText="surname" />
-      <TextField fx:id="txtCittaDiNascita" layoutX="151.0" layoutY="266.0" promptText="data di nascita" />
+      <TextField fx:id="txtCittaDiNascita" layoutX="151.0" layoutY="266.0" promptText="città di nascita" />
       <TextField fx:id="txtName" layoutX="151.0" layoutY="66.0" promptText="name" />
       <TextField fx:id="txtCodiceFiscale" layoutX="151.0" layoutY="188.0" promptText="codice fiscale" />
       <TextField fx:id="txtPassword" layoutX="151.0" layoutY="143.0" promptText="password" />

@@ -103,7 +103,7 @@ public class ChangePassController {
                 return;
             }
 
-            if (txtOldPassword.getText().equals(i.getPassword()) && txtUsername.getText().equals(i.getNome())) {
+            if (txtOldPassword.getText().equals(i.getPassword())) {
                 if (txtOldPassword.getText().equals(txtNewPassowrd.getText())) {
                     i.setPassword(txtNewPassowrd.getText());
                 } else {
@@ -111,7 +111,7 @@ public class ChangePassController {
                     return;
                 }
             } else {
-                new Alert(Alert.AlertType.ERROR, "Wrong username and/or oldPassword!").showAndWait();
+                new Alert(Alert.AlertType.ERROR, "Wrong oldPassword!").showAndWait();
                 return;
             }
 

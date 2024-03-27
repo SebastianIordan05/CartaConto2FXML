@@ -81,12 +81,18 @@ public class NewContoController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
-    public static boolean controllaEmail(String email) {
-        String pattern = "[a-zA-Z]+\\.[a-zA-Z]+@edu\\.iisleviponti\\.it";
-
-        return email.matches(pattern);
+    
+    @FXML
+    private void setDate() {
+        date = datePicker.getValue();
     }
+    
+//
+//    public static boolean controllaEmail(String email) {
+//        String pattern = "[a-zA-Z]+\\.[a-zA-Z]+@edu\\.iisleviponti\\.it";
+//
+//        return email.matches(pattern);
+//    }
 
 //    public static boolean controllaNumeroTelefono(String numero) {
 //        String pattern = "^\\+(?:[0-9] ?){6,14}[0-9]$";
@@ -96,34 +102,30 @@ public class NewContoController implements Initializable {
 //
 //        return m.matches();
 //    }
-    public static boolean controllaCodiceFiscale(String codiceFiscale) {
-        if (codiceFiscale.length() != 16) {
-            return false;
-        }
-
-        String cf = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
-
-        return codiceFiscale.matches(cf);
-    }
-
-    public static boolean controllaCAP(String cap) {
-        if (cap.length() != 5) {
-            return false;
-        }
-
-        for (char c : cap.toCharArray()) {
-            if (!Character.isDigit(c)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @FXML
-    private void setDate() {
-        date = datePicker.getValue();
-    }
+//    
+//    public static boolean controllaCodiceFiscale(String codiceFiscale) {
+//        if (codiceFiscale.length() != 16) {
+//            return false;
+//        }
+//
+//        String cf = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
+//
+//        return codiceFiscale.matches(cf);
+//    }
+//
+//    public static boolean controllaCAP(String cap) {
+//        if (cap.length() != 5) {
+//            return false;
+//        }
+//
+//        for (char c : cap.toCharArray()) {
+//            if (!Character.isDigit(c)) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     private void newIntestatario() {
         if (txtCodiceFiscale.getText().trim().length() == 0 && txtSurname.getText().trim().length() == 0
@@ -132,7 +134,7 @@ public class NewContoController implements Initializable {
                 && txtCittaAttuale.getText().trim().length() == 0 && txtProvinciaAttuale.getText().trim().length() == 0
                 && txtCellulare.getText().trim().length() == 0 && txtEmail.getText().trim().length() == 0
                 && txtPassword.getText().trim().length() == 0) {
-            new Alert(Alert.AlertType.ERROR, "Wrong username and/or password!").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Wrong credentials!").showAndWait();
         } else {
             i = new Intestatario(txtCodiceFiscale.getText(), txtSurname.getText(),
                     txtName.getText(), txtCittaDiNascita.getText(), date, txtIndirizzoAttuale.getText(),

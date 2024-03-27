@@ -116,11 +116,10 @@ public class LoginController {
                 return;
             }
 
-            if (txtPassword.getText().equals(i.getPassword()) &&
-                    txtUsername.getText().equals(i.getNome())) {
+            if (txtPassword.getText().equals(i.getPassword())) {
                 switchToLogin();
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
+                new Alert(Alert.AlertType.INFORMATION, "Wrong password!").showAndWait();
                 return;
             }
 
