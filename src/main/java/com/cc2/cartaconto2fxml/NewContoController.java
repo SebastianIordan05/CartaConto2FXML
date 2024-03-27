@@ -70,7 +70,7 @@ public class NewContoController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @FXML
     private void switchToLogin2() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
@@ -96,7 +96,6 @@ public class NewContoController implements Initializable {
 //
 //        return m.matches();
 //    }
-    
     public static boolean controllaCodiceFiscale(String codiceFiscale) {
         if (codiceFiscale.length() != 16) {
             return false;

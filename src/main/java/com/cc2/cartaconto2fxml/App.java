@@ -24,7 +24,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @Override
     public void stop() {
         Intestatario.saveIntestatari(Intestatario.intestatari, new File(Intestatario.FILE_PATH));

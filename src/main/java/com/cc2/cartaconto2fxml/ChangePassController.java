@@ -46,7 +46,7 @@ public class ChangePassController {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @FXML
     private void switchToRegister() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("newConto.fxml"));
@@ -70,8 +70,8 @@ public class ChangePassController {
             i = Intestatario.intestatari.get(code);
 
             if (i == null) {
-                Alert noIntestatarioFound = new Alert(Alert.AlertType.CONFIRMATION, "No intestatario found with the name: " +
-                        code + "\nDo you want to create a new one?");
+                Alert noIntestatarioFound = new Alert(Alert.AlertType.CONFIRMATION, "No intestatario found with the name: "
+                        + code + "\nDo you want to create a new one?");
                 noIntestatarioFound.setHeaderText("Intestatario not found!");
 
                 ButtonType btnOK = new ButtonType("Si");
@@ -85,7 +85,8 @@ public class ChangePassController {
                         System.out.println("You clicked OK");
                         try {
                             switchToRegister();
-                        } catch (IOException ex) {}
+                        } catch (IOException ex) {
+                        }
                     } else if (result == btnNO) {
                         System.out.println("You clicked NO");
                     } else if (result == btnEXIT) {
@@ -95,7 +96,7 @@ public class ChangePassController {
                 }, () -> {
                     System.out.println("Nessun pulsante è stato premuto");
                 });
-                
+
                 txtUsername.setText("");
                 txtOldPassword.setText("");
                 txtNewPassowrd.setText("");
@@ -103,7 +104,12 @@ public class ChangePassController {
             }
 
             if (txtOldPassword.getText().equals(i.getPassword()) && txtUsername.getText().equals(i.getNome())) {
-                i.setPassword(txtNewPassowrd.getText());
+                if (txtOldPassword.getText().equals(txtNewPassowrd.getText())) {
+                    i.setPassword(txtNewPassowrd.getText());
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "New password == old password!").showAndWait();
+                    return;
+                }
             } else {
                 new Alert(Alert.AlertType.ERROR, "Wrong username and/or oldPassword!").showAndWait();
                 return;

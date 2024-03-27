@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import model.Conto;
@@ -25,8 +26,8 @@ import model.Movimento;
  *
  * @author seba2
  */
-public class MovementsController implements Initializable {
-    
+public class MovementsController {
+
     private Intestatario i;
     private Conto c;
 
@@ -38,7 +39,9 @@ public class MovementsController implements Initializable {
     private Button btnRegister;
     @FXML
     private Button btnLogin;
-    
+    @FXML
+    private Label lblSaldo;
+
     @FXML
     private void switchToLogin() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
@@ -60,12 +63,12 @@ public class MovementsController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @FXML
     private void switchToNewMovements() throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("newmovement.fxml"));
         Parent root = loader.load();
-        
+
         NewMovementController nm = loader.getController();
         nm.setIntestatario(i);
 
@@ -74,39 +77,38 @@ public class MovementsController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     public void setIntestatario(Intestatario i) {
         this.i = i;
     }
-    
+
     public void setConto(Conto c) {
         this.c = c;
     }
-    
-    private String check() {
+
+    private String check() throws Exception {
         StringBuilder str = new StringBuilder();
         List<Movimento> operazioni = c.elencoOperazioni();
-        str.append("- Elenco operazioni del conto: \n\n");
-        for (Movimento movement : operazioni) {
-            str.append("    ").append(movement.getNumeroProgressivo()).append(": \n")
-                    .append("        ").append("Causale: ").append(movement.getDescrizione()).append("\n")
-                    .append("        ").append("Data operazione: ").append(movement.getDataOperazione()).append("\n")
-                    .append("        ").append("Importo: ").append(movement.getImporto()).append(" $").append("\n")
-                    .append("        ").append("Costo operazione: ").append(movement.getCostoOperazione()).append(" $").append("\n")
-                    .append("        ").append("Tipo movimento: ").append(movement.getTipoOperazione().getCodice()).append("\n")
-                    .append("        ").append("Segno movimento: ").append(movement.getTipoOperazione().getSegnoOperazione()).append("\n");
-        }
-        str.append("\n").append("- Saldo totale del conto: ").append(c.calcolaSaldo()).append(" $").append("\n");
 
+        for (Movimento movement : operazioni) {
+            str.append("").append(movement.getNumeroProgressivo()).append(": \n")
+                    .append("    ").append("Causale: ").append(movement.getDescrizione()).append("\n")
+                    .append("    ").append("Data operazione: ").append(movement.getDataOperazione()).append("\n")
+                    .append("    ").append("Importo: ").append(movement.getImporto()).append(" $").append("\n")
+                    .append("    ").append("Costo operazione: ").append(movement.getCostoOperazione()).append(" $").append("\n")
+                    .append("    ").append("Tipo movimento: ").append(movement.getTipoOperazione().getCodice()).append("\n")
+                    .append("    ").append("Segno movimento: ").append(movement.getTipoOperazione().getSegnoOperazione()).append("\n");
+        }
+
+        setLabel();
         return str.toString();
     }
-    
-    public void setText() {
+
+    private void setLabel() throws Exception {
+        lblSaldo.setText(c.calcolaSaldo() + " $");
+    }
+
+    public void setText() throws Exception {
         txtaMovements.setText(check());
     }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }    
-    
 }

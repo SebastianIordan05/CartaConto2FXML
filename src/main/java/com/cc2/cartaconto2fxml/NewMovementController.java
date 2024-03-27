@@ -83,12 +83,12 @@ public class NewMovementController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
+
     @FXML
-    private void switchToMovements() throws IOException {
+    private void switchToMovements() throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("movements.fxml"));
         Parent root = loader.load();
-        
+
         MovementsController movements = loader.getController();
         movements.setIntestatario(i);
         movements.setConto(c);
@@ -116,8 +116,7 @@ public class NewMovementController implements Initializable {
     }
 
     @FXML
-    private void checkMovements() throws IOException {
-//        new Alert(Alert.AlertType.INFORMATION, check()).showAndWait();
+    private void checkMovements() throws IOException, Exception {
         switchToMovements();
     }
 
@@ -172,7 +171,7 @@ public class NewMovementController implements Initializable {
             new Alert(Alert.AlertType.INFORMATION, "New conto created for " + i.getNome()
                     + ", iban: " + c.getCodiceIBAN()).showAndWait();
         }
-        
+
         lblIban.setText(c.getCodiceIBAN());
         setLabel();
     }
@@ -186,24 +185,6 @@ public class NewMovementController implements Initializable {
         }
 
         return ibanBuilder.toString();
-    }
-
-    private String check() {
-        StringBuilder str = new StringBuilder();
-        List<Movimento> operazioni = c.elencoOperazioni();
-        str.append("- Elenco operazioni del conto: \n\n");
-        for (Movimento movement : operazioni) {
-            str.append("    ").append(movement.getNumeroProgressivo()).append(": \n")
-                    .append("        ").append("Causale: ").append(movement.getDescrizione()).append("\n")
-                    .append("        ").append("Data operazione: ").append(movement.getDataOperazione()).append("\n")
-                    .append("        ").append("Importo: ").append(movement.getImporto()).append(" $").append("\n")
-                    .append("        ").append("Costo operazione: ").append(movement.getCostoOperazione()).append(" $").append("\n")
-                    .append("        ").append("Tipo movimento: ").append(movement.getTipoOperazione().getCodice()).append("\n")
-                    .append("        ").append("Segno movimento: ").append(movement.getTipoOperazione().getSegnoOperazione()).append("\n");
-        }
-        str.append("\n").append("- Saldo totale del conto: ").append(c.calcolaSaldo()).append(" $").append("\n");
-
-        return str.toString();
     }
 
     private void setLabel() throws Exception {

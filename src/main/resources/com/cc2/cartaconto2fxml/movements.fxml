@@ -7,10 +7,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cc2.cartaconto2fxml.MovementsController">
    <children>
-      <TextArea fx:id="txtaMovements" editable="false" layoutX="119.0" layoutY="64.0" prefHeight="272.0" prefWidth="363.0" />
-      <Label layoutX="269.0" layoutY="30.0" text="Movements" />
+      <TextArea fx:id="txtaMovements" editable="false" layoutX="119.0" layoutY="43.0" prefHeight="276.0" prefWidth="363.0" />
+      <Label layoutX="269.0" layoutY="14.0" text="Movements" />
       <Button fx:id="btnNewMovements" layoutX="229.0" layoutY="352.0" mnemonicParsing="false" onAction="#switchToNewMovements" text="back to newMovements" />
       <Button fx:id="btnRegister" layoutX="157.0" layoutY="352.0" mnemonicParsing="false" onAction="#switchToRegister" text="register" />
       <Button fx:id="btnLogin" layoutX="385.0" layoutY="352.0" mnemonicParsing="false" onAction="#switchToLogin" text="login" />
+      <Label layoutX="243.0" layoutY="325.0" text="Saldo:" />
+      <Label fx:id="lblSaldo" layoutX="285.0" layoutY="325.0" prefHeight="17.0" prefWidth="81.0" text=" " />
    </children>
 </AnchorPane>
