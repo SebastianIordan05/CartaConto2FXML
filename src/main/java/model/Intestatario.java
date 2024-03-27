@@ -33,10 +33,10 @@ public class Intestatario implements Serializable {
     private final String cellulare;
     private final String email;
     private String password;
-    
-    final public static String FILE_PATH = "./.intestatari"; // path del file
+
+    final public static String FILE_PATH = "./.intestatari";
     public static Map<String, Intestatario> intestatari = loadIntestatari(new File(FILE_PATH));
-    
+
     public Intestatario(String codiceFiscale, String cognome, String nome, String luogoNascita, LocalDate dataNascita,
             String indirizzo, String cap, String citta, String provincia, String cellulare, String email, String password) {
         this.codiceFiscale = codiceFiscale;
@@ -52,21 +52,21 @@ public class Intestatario implements Serializable {
         this.email = email;
         this.password = password;
     }
-    
+
     private static Map<String, Intestatario> loadIntestatari(final File f) {
         try {
             if (!f.exists()) {
                 f.createNewFile();
                 return new HashMap<>();
             }
-            
+
             if (!f.canRead()) {
                 return new HashMap<>();
             }
-            
+
             final ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(f));
             final Map<String, Intestatario> intestatario = (Map<String, Intestatario>) inputStream.readObject();
-            
+
             return intestatario;
 
         } catch (final IOException | ClassNotFoundException ex) {
@@ -74,17 +74,17 @@ public class Intestatario implements Serializable {
 
         return new HashMap<>();
     }
-    
+
     public static void saveIntestatari(final Map<String, Intestatario> intestatari, final File f) {
         try {
             if (!f.exists()) {
                 f.createNewFile();
             }
-            
+
             if (!f.canWrite()) {
                 return;
             }
-            
+
             final ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(f));
             outputStream.writeObject(intestatari);
         } catch (final IOException ex) {
@@ -93,12 +93,12 @@ public class Intestatario implements Serializable {
 
     @Override
     public String toString() {
-        return "Intestatario{" + "codiceFiscale=" + codiceFiscale + ", cognome=" + cognome + ", nome=" + nome +
-                ", luogoNascita=" + luogoNascita + ", dataNascita=" + dataNascita + ", indirizzo=" + indirizzo +
-                ", cap=" + cap + ", citta=" + citta + ", provincia=" + provincia + ", cellulare=" + cellulare +
-                ", email=" + email + ", password=" + password + '}';
+        return "Intestatario{" + "codiceFiscale=" + codiceFiscale + ", cognome=" + cognome + ", nome=" + nome
+                + ", luogoNascita=" + luogoNascita + ", dataNascita=" + dataNascita + ", indirizzo=" + indirizzo
+                + ", cap=" + cap + ", citta=" + citta + ", provincia=" + provincia + ", cellulare=" + cellulare
+                + ", email=" + email + ", password=" + password + '}';
     }
-    
+
     public String getCodiceFiscale() {
         return codiceFiscale;
     }
@@ -141,12 +141,12 @@ public class Intestatario implements Serializable {
 
     public String getEmail() {
         return email;
-    }  
+    }
 
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }

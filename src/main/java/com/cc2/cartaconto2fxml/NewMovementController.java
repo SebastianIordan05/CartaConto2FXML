@@ -36,7 +36,7 @@ public class NewMovementController implements Initializable {
 
     private Intestatario i;
     private Conto c;
-    private TipoMovimento m;
+    private TipoMovimento tm;
 
     private Object selectedItem;
     private LocalDate date;
@@ -85,9 +85,25 @@ public class NewMovementController implements Initializable {
     }
     
     @FXML
+    private void switchToMovements() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("movements.fxml"));
+        Parent root = loader.load();
+        
+        MovementsController movements = loader.getController();
+        movements.setIntestatario(i);
+        movements.setConto(c);
+        movements.setText();
+
+        Stage stage = (Stage) btnBackToRegister.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
     private void effettuaMovimento() throws Exception {
         movimento();
-        c.registraOperazione(m, Double.parseDouble(txtImporto.getText()), m.getDescrizione(), date);
+        c.registraOperazione(tm, Double.parseDouble(txtImporto.getText()), tm.getDescrizione(), date);
 
         System.out.println("importo to double: " + Double.valueOf(txtImporto.getText()));
         System.out.println(c.toString());
@@ -100,8 +116,9 @@ public class NewMovementController implements Initializable {
     }
 
     @FXML
-    private void checkMovements() {
-        new Alert(Alert.AlertType.INFORMATION, check()).showAndWait();
+    private void checkMovements() throws IOException {
+//        new Alert(Alert.AlertType.INFORMATION, check()).showAndWait();
+        switchToMovements();
     }
 
     @FXML
@@ -117,22 +134,22 @@ public class NewMovementController implements Initializable {
     }
 
     private void movimento() {
-        if (m != null) {
+        if (tm != null) {
             if (txtImporto.getText().trim().length() != 0 && txtCausale.getText().trim().length() != 0 && selectedItem != null && date != null) {
-                m.setCodice(selectedItem.toString());
-                if ("versamento".equals(m.getCodice())) {
-                    m.setSegnoOperazione('+');
-                    System.out.println("segno: " + m.getSegnoOperazione());
-                } else if ("prelievo".equals(m.getCodice()) || "bonifico ordinario".equals(m.getCodice()) || "bonifico istantaneo".equals(m.getCodice())) {
-                    m.setSegnoOperazione('-');
-                    System.out.println("segno: " + m.getSegnoOperazione());
+                tm.setCodice(selectedItem.toString());
+                if ("versamento".equals(tm.getCodice())) {
+                    tm.setSegnoOperazione('+');
+                    System.out.println("segno: " + tm.getSegnoOperazione());
+                } else if ("prelievo".equals(tm.getCodice()) || "bonifico ordinario".equals(tm.getCodice()) || "bonifico istantaneo".equals(tm.getCodice())) {
+                    tm.setSegnoOperazione('-');
+                    System.out.println("segno: " + tm.getSegnoOperazione());
                 }
-                if ("bonifico istantaneo".equals(m.getCodice())) {
-                    m.setCosto(2.5); // 2,5 euro
-                    System.out.println("costo: " + m.getCosto());
+                if ("bonifico istantaneo".equals(tm.getCodice())) {
+                    tm.setCosto(2.5); // 2,5 euro
+                    System.out.println("costo: " + tm.getCosto());
                 }
-                m.setDescrizione(txtCausale.getText());
-                System.out.println(m.toString());
+                tm.setDescrizione(txtCausale.getText());
+                System.out.println(tm.toString());
             } else {
                 new Alert(Alert.AlertType.ERROR, "Wrong importo, causale, tipo movimento and data!").showAndWait();
             }
@@ -155,7 +172,7 @@ public class NewMovementController implements Initializable {
             new Alert(Alert.AlertType.INFORMATION, "New conto created for " + i.getNome()
                     + ", iban: " + c.getCodiceIBAN()).showAndWait();
         }
-
+        
         lblIban.setText(c.getCodiceIBAN());
         setLabel();
     }
@@ -164,7 +181,7 @@ public class NewMovementController implements Initializable {
         StringBuilder ibanBuilder = new StringBuilder("IT");
         Random random = new Random();
 
-        for (int i = 0; i < 25; i++) {
+        for (int j = 0; j < 25; j++) {
             ibanBuilder.append(random.nextInt(10));
         }
 
@@ -190,7 +207,6 @@ public class NewMovementController implements Initializable {
     }
 
     private void setLabel() throws Exception {
-//        saldo = Double.toString(c.calcolaSaldo());
         lblSaldo.setText(c.calcolaSaldo() + " $");
     }
 
@@ -207,6 +223,6 @@ public class NewMovementController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initializeChoiceBox();
         initializeDatePicker();
-        m = new TipoMovimento();
+        tm = new TipoMovimento();
     }
 }

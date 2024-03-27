@@ -31,6 +31,8 @@ public class Conto implements Serializable {
     private LocalDate date;
     private double saldo;
     
+//    public ArrayList<String> iCollegati = new ArrayList<>();
+    
     public static final String FILE2_PATH = "./.conti";
     public static Map<String, Conto> conti = loadConti(new File(FILE2_PATH));
 

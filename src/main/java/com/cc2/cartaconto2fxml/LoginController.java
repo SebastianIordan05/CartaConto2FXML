@@ -29,6 +29,8 @@ public class LoginController {
     @FXML
     private PasswordField txtPassword;
     @FXML
+    private TextField txtCodiceFiscale;
+    @FXML
     private Button btnRegister;
     @FXML
     private Button btnChangePass;
@@ -60,7 +62,6 @@ public class LoginController {
         Parent root = loader.load();
 
         NewMovementController newMovement = loader.getController();
-        newMovement = loader.getController();
         if (i != null) {
             newMovement.setIntestatario(i);
         }
@@ -115,7 +116,8 @@ public class LoginController {
                 return;
             }
 
-            if (txtPassword.getText().equals(i.getPassword()) && txtUsername.getText().equals(i.getNome())) {
+            if (txtPassword.getText().equals(i.getPassword()) &&
+                    txtUsername.getText().equals(i.getNome())) {
                 switchToLogin();
             } else {
                 new Alert(Alert.AlertType.INFORMATION, "Wrong username and/or password!").showAndWait();
