@@ -179,11 +179,20 @@ public class NewMovementController implements Initializable {
     private String generateIBAN() {
         StringBuilder ibanBuilder = new StringBuilder("IT");
         Random random = new Random();
+        int indiceCasuale = random.nextInt(26);
 
-        for (int j = 0; j < 25; j++) {
+        for (int j = 0; j < 2; j++) {
             ibanBuilder.append(random.nextInt(10));
         }
-
+        
+        char letteraCasuale = (char) ('A' + indiceCasuale);
+        ibanBuilder.append(letteraCasuale);
+        
+        for (int j = 0; j < 22; j++) {
+            ibanBuilder.append(random.nextInt(10));
+        }
+        
+        System.out.println(ibanBuilder);
         return ibanBuilder.toString();
     }
 

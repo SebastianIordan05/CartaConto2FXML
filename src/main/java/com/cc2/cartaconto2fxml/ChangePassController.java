@@ -94,7 +94,7 @@ public class ChangePassController {
                         System.out.println("You clicked EXIT");
                     }
                 }, () -> {
-                    System.out.println("Nessun pulsante è stato premuto");
+                    System.out.println("No button was clicked");
                 });
 
                 txtUsername.setText("");
@@ -107,7 +107,7 @@ public class ChangePassController {
                 if (txtOldPassword.getText().equals(txtNewPassowrd.getText())) {
                     i.setPassword(txtNewPassowrd.getText());
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "New password == old password!").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "NewPassword == OldPpassword!").showAndWait();
                     return;
                 }
             } else {
